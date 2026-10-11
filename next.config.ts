@@ -5,6 +5,10 @@ const nextConfig: NextConfig = {
   experimental: {
     agentFeedback: true,
   },
+  // serve the files in /public as they are: no resizing, no re-encoding
+  images: {
+    unoptimized: true,
+  },
   cacheComponents: true,
   partialPrefetching: true,
   turbopack: {

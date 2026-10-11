@@ -1,26 +1,437 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+  --color-hong: #ff42a4;
+  --color-hong-dam: #fe41a4;
+  --color-hong-phan: #f6a8d1;
+  --color-hong-nhat: #f6c7e0;
+  --color-hong-kem: #ffeef4;
+  --color-xanh-may: #b4e6f6;
+  --color-xanh-tim: rgb(70 91 174 / 0.79);
+  --color-muc: #353535;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* 1 spacing unit = 1 pixel on the designer's artboard. w-373.5 means what Figma says. */
+  --spacing: 1px;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  --animate-noi: noi 5s ease-in-out infinite;
+  --animate-lac: lac 6s ease-in-out infinite;
+  --animate-tho: tho 4s ease-in-out infinite;
+  --animate-bat: bat 0.6s cubic-bezier(0.2, 1.5, 0.4, 1) backwards;
+  --animate-len: len 0.7s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  --animate-truot: truot 0.7s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  --animate-nhip: nhip 2.4s ease-in-out infinite;
+  --animate-nhun: nhun 0.45s ease-out;
+  --animate-mo: mo 0.7s ease-in-out backwards;
+
+  @keyframes mo {
+    from {
+      translate: 0 -40px;
+      filter: blur(10px);
+      opacity: 0;
+    }
+    50% {
+      translate: 0 5px;
+      filter: blur(5px);
+      opacity: 0.5;
+    }
+  }
+
+  @keyframes nhun {
+    30% {
+      scale: 1.09 0.93;
+    }
+    60% {
+      scale: 0.97 1.04;
+    }
+  }
+
+  /* idle stuff uses translate/rotate, entrances use scale/opacity, so they can share an element */
+  @keyframes noi {
+    50% {
+      translate: 0 calc(var(--spacing) * -8);
+    }
+  }
+  @keyframes lac {
+    0%,
+    100% {
+      rotate: var(--goc-lac, -3deg);
+    }
+    50% {
+      rotate: calc(var(--goc-lac, -3deg) * -1);
+    }
+  }
+  @keyframes tho {
+    50% {
+      scale: 0.94 0.9;
+      opacity: 0.8;
+    }
+  }
+  @keyframes bat {
+    from {
+      scale: 0.3;
+      opacity: 0;
+    }
+  }
+  @keyframes len {
+    from {
+      translate: 0 calc(var(--spacing) * 40);
+      opacity: 0;
+    }
+  }
+  @keyframes truot {
+    from {
+      translate: var(--tu, -60px) 0;
+      opacity: 0;
+    }
+  }
+  @keyframes nhip {
+    0%,
+    100% {
+      scale: 1;
+    }
+    50% {
+      scale: var(--do-nhip, 1.12);
+    }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@theme inline {
+  --font-sans: var(--font-alexandria), ui-sans-serif, system-ui, sans-serif;
+  --font-dolly: var(--font-retro-dolly), cursive;
+  --font-galano: var(--font-galano-alt), var(--font-alexandria), sans-serif;
 }
+
+@utility co-* {
+  font-size: calc(var(--spacing) * --value(number));
+}
+@utility bo-* {
+  border-radius: calc(var(--spacing) * --value(number));
+}
+@utility vien-* {
+  border-width: calc(var(--spacing) * --value(number));
+  border-style: solid;
+}
+/* the one shadow this whole design owns: 4 4 4 black 25% */
+@utility bong {
+  box-shadow: calc(var(--spacing) * 4) calc(var(--spacing) * 4) calc(var(--spacing) * 4) rgb(0 0 0 / 0.25);
+}
+@utility bong-hinh {
+  filter: drop-shadow(calc(var(--spacing) * 4) calc(var(--spacing) * 4) calc(var(--spacing) * 2) rgb(0 0 0 / 0.25));
+}
+
+:root {
+  /* the nav keeps its own ruler so it doesn't resize between pages */
+  --un: clamp(0.8px, 100vw / 480, 0.95px);
+  --nav: calc(66 * var(--un));
+  --le: min(100 * var(--un), 5vw);
+}
+
+/* pages measure against this box, not the viewport: vw counts the scrollbar, cqw doesn't */
+.khung-trang {
+  container-type: inline-size;
+}
+.khung-trang > * {
+  /* phones read a 480-wide artboard */
+  --spacing: clamp(0.75px, 100cqw / 480, 1.15px);
+}
+
+@media (width >= 64rem) {
+  :root {
+    --un: clamp(0.7px, 100vw / 1440, 1.2px);
+    --le: calc(100 * var(--un));
+  }
+  .khung-trang > * {
+    /* desktop follows the 1440 artboard, capped so a 4K monitor doesn't shout */
+    --spacing: calc(min(100cqw, 1728px) / 1440);
+  }
+  /* "make it fit one screen" - the designer. so it shrinks until it does */
+  .khung-trang > .mot-man {
+    --spacing: max(0.55px, min(100cqw / 1440, (100dvh - var(--nav)) / var(--cao-man, 958)));
+  }
+}
+
+html {
+  /* look, don't take: no selecting, no long-press saving */
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  overflow-x: clip;
+}
+
+body {
+  background: #fff;
+  color: var(--color-muc);
+  overflow-x: clip;
+}
+
+/* blue gingham at 40%. the tile is portrait and the design lays it on its side */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 100lvh;
+  height: 100vw;
+  transform-origin: top left;
+  transform: translateY(100lvh) rotate(-90deg);
+  background: url("/images/shared/checker-blue.png") center / cover;
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+img,
+svg,
+a,
+video {
+  -webkit-user-drag: none;
+  user-drag: none;
+}
+/* right-click lands on the wrapper, so no "save image as" */
+img {
+  pointer-events: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-xanh-tim);
+  outline-offset: 2px;
+}
+
+/* --- lettering ------------------------------------------------------- */
+/* the designer's text box, with the type set inside it the way Figma sets it */
+.chu-ve {
+  --don-vi: calc(var(--spacing) * var(--co, 1));
+  display: block;
+  flex: none;
+  width: calc(var(--rong) * var(--don-vi));
+  height: calc(var(--cao) * var(--don-vi));
+  font-size: calc(var(--co-chu) * var(--don-vi));
+  line-height: calc(var(--dong) * var(--don-vi));
+  letter-spacing: calc(var(--gian, 0) * 1em);
+  word-spacing: calc(var(--gian-tu, 0) * 1em);
+  text-align: var(--canh, center);
+  white-space: pre;
+  font-kerning: normal;
+}
+/* transform + opacity only, so the hop never asks for a layout */
+.chu-nhay > span {
+  display: inline-block;
+  transform-origin: 50% 100%;
+  animation: chu-nhay 0.7s cubic-bezier(0.2, 1.4, 0.4, 1) backwards;
+  animation-delay: calc(var(--i) * 90ms + var(--tre, 0ms));
+}
+@keyframes chu-nhay {
+  from {
+    opacity: 0;
+    transform: translateY(60%) scale(0.6) rotate(-8deg);
+  }
+}
+
+/* --- pictures -------------------------------------------------------- */
+.anh {
+  position: relative;
+  display: block;
+  overflow: hidden;
+}
+.anh img {
+  object-fit: cover;
+}
+.anh.phong img {
+  transition: scale 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@media (hover: hover) {
+  .anh.phong:hover img {
+    scale: 1.05;
+  }
+}
+
+/* --- scaled box: inside it, spacing snaps to the box's own artboard --- */
+.khung-ti-le {
+  container-type: inline-size;
+}
+.khung-ti-le > div {
+  --spacing: calc(100cqw / var(--goc));
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* --- home stage ------------------------------------------------------ */
+/* walk on, then float. she earned it */
+.bup-be {
+  animation:
+    len 0.9s cubic-bezier(0.22, 1, 0.36, 1) backwards,
+    noi 6s ease-in-out 0.9s infinite;
+}
+.may {
+  animation:
+    bat 0.6s cubic-bezier(0.2, 1.5, 0.4, 1) var(--tre, 0ms) backwards,
+    noi 5s ease-in-out var(--tre-noi, 1s) infinite;
+}
+.nut-unbox {
+  --do-nhip: 1.04;
+  animation:
+    bat 0.6s cubic-bezier(0.2, 1.5, 0.4, 1) 0.9s backwards,
+    nhip 2.4s ease-in-out 2s infinite;
+  transition: translate 0.2s ease-out;
+}
+.nut-unbox:active {
+  translate: 0 calc(var(--spacing) * 3);
+}
+.mon-do {
+  transition:
+    scale 0.3s ease-in,
+    opacity 0.3s ease-in;
+}
+.mon-do:active {
+  scale: 0.8;
+}
+@media (hover: hover) {
+  .nut-unbox:hover {
+    translate: 0 calc(var(--spacing) * -4);
+  }
+  /* the hover state from the prototype: shrink to 117/133 and fade */
+  .mon-do:hover {
+    scale: 0.88;
+    opacity: 0.5;
+  }
+}
+
+/* --- the book -------------------------------------------------------- */
+@media (width >= 64rem) {
+  .sach {
+    perspective: calc(var(--spacing) * 2600);
+  }
+  /* every sheet keeps its own layer for good. a page that gets redrawn has to decode its
+     11-megapixel photos again, and that was the stutter */
+  .sach > *,
+  .to-sach > * {
+    will-change: transform;
+  }
+  .to-sach {
+    transform-style: preserve-3d;
+    transform-origin: left center;
+    transition: transform 1.1s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+  .to-sach[data-lat="true"] {
+    transform: rotateY(-180deg);
+  }
+  /* both faces stay drawn, a hair apart in depth, and the nearer one wins.
+     backface-visibility: hidden would throw the far face away and redraw it on every turn */
+  .to-sach > * {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    transform: translateZ(0.5px);
+  }
+  .to-sach > :last-child {
+    transform: rotateY(180deg) translateZ(0.5px);
+  }
+  /* a little dip where the pages meet the spine */
+  .gay-trai::after,
+  .gay-phai::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .gay-trai::after {
+    background: linear-gradient(to left, rgb(0 0 0 / 0.14), transparent 7%);
+  }
+  .gay-phai::after {
+    background: linear-gradient(to right, rgb(0 0 0 / 0.14), transparent 7%);
+  }
+}
+.dai-sach {
+  scrollbar-width: none;
+}
+.dai-sach::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* --- scrapbook pages ------------------------------------------------- */
+/* strips of collage and paragraphs. stacked on phones, back on their artboard y on wide screens */
+.dai-ghep {
+  position: relative;
+  height: calc(var(--spacing) * var(--cao));
+}
+.van-sach {
+  padding: 10px 14px;
+  font-size: 13.5px;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+.van-sach.tua {
+  padding-bottom: 0;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--color-hong);
+}
+@media (width >= 64rem) {
+  .dai-ghep,
+  .van-sach {
+    position: absolute;
+    top: calc(var(--spacing) * var(--y));
+  }
+  .dai-ghep {
+    left: 0;
+    right: 0;
+  }
+  .van-sach {
+    left: calc(var(--spacing) * var(--x));
+    width: calc(var(--spacing) * var(--rong));
+    padding: 0;
+    font-size: calc(var(--spacing) * 15);
+    line-height: 1;
+  }
+  .van-sach.tua {
+    font-size: calc(var(--spacing) * 23);
+    line-height: 1.043;
+  }
+}
+/* polaroids come forward when you point at them */
+.anh-chup > span {
+  transition: scale 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@media (hover: hover) {
+  .anh-chup:hover {
+    z-index: 5;
+  }
+  .anh-chup:hover > span {
+    scale: 1.06;
+  }
+}
+
+/* --- art page backdrop ----------------------------------------------- */
+/* polka dots, same sideways-tile trick as the gingham. sticky, so it never needs to know the page height */
+.nen-cham {
+  position: sticky;
+  top: 0;
+  z-index: -1;
+  height: 100lvh;
+  margin-bottom: -100lvh;
+  overflow: hidden;
+  pointer-events: none;
+}
+.nen-cham > div {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100lvh;
+  height: 100cqw;
+  transform-origin: top left;
+  transform: translateY(100lvh) rotate(-90deg);
+  background: url("/images/art/dots-bg.png") left top / auto 100% repeat-x;
+}
+

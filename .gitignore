@@ -39,3 +39,16 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# ai tooling: notes, agent configs, browser scratch. stays on my machine
+/.ai/
+/.serena/
+/.claude/
+/.cursor/
+/.codex/
+/.gemini/
+/.playwright-mcp/
+.mcp.json
+AGENTS.md
+CLAUDE.md
+GEMINI.md
