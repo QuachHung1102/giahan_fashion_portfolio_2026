@@ -111,7 +111,7 @@ export default function TrangNgheThuat() {
             <p className={`${doanVan} mt-8 lg:mt-11`}>
               My first high school summer could not have been more memorable with The Classics and their Concert! This
               annual event brings together opera singers, professional musicians, and high school students from across
-              Hanoi to create a concert that feels both intimate and warmly welcoming, yet remarkably professional
+              Hanoi to create a concert that feels both intimate and warmly welcoming, yet remarkably professional.
             </p>
           </HienDan>
           <HangAnh
@@ -138,21 +138,10 @@ export default function TrangNgheThuat() {
 
         <section className="mt-40 lg:mt-56.5">
           <HienDan className="lg:w-615">
-            <h2 className={`${tenMuc} flex flex-wrap gap-x-17 gap-y-10`}>
-              ON STAGE
-              <a
-                href="https://youtu.be/kLJcXGPTGmc?si=osFpy7PPcYY1kZ1N"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline transition-opacity duration-300 hover:opacity-60"
-              >
-                [My performance]
-              </a>
-            </h2>
+            <h2 className={tenMuc}>G’LAMS’</h2>
             <p className={`${doanVan} mt-8 lg:mt-11`}>
-              ON STAGE is where that actress grew. Here, I stepped into a completely different character with newfound
-              confidence - a young nurse returning to her hometown - in Vietnam’s largest high school student theater
-              program. The production was later broadcast on national television by VTV
+              G’LAMS’ Ba Hồi Hồn Vương was where my stage journey began. After a year of training, I stepped onto the
+              stage to embody the spirit of a H’Mông girl - a character who gave my earliest days as an actress a soul.
             </p>
           </HienDan>
           <HangAnh
@@ -179,10 +168,21 @@ export default function TrangNgheThuat() {
 
         <section className="mt-40 lg:mt-56.5">
           <HienDan className="lg:w-615">
-            <h2 className={tenMuc}>G’LAMS’</h2>
+            <h2 className={`${tenMuc} flex flex-wrap gap-x-17 gap-y-10`}>
+              ON STAGE
+              <a
+                href="https://youtu.be/kLJcXGPTGmc?si=osFpy7PPcYY1kZ1N"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline transition-opacity duration-300 hover:opacity-60"
+              >
+                [My performance]
+              </a>
+            </h2>
             <p className={`${doanVan} mt-8 lg:mt-11`}>
-              G’LAMS’ Ba Hồi Hồn Vương was where my stage journey began. After a year of training, I stepped onto the
-              stage to embody the spirit of a H’Mông girl - a character who gave my earliest days as an actress a soul
+              ON STAGE is where that actress grew. Here, I stepped into a completely different character with newfound
+              confidence - a young nurse returning to her hometown - in Vietnam’s largest high school student theater
+              program. The production was later broadcast on national television by VTV.
             </p>
           </HienDan>
           <HangAnh
